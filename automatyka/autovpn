@@ -1,0 +1,50 @@
+#!/bin/bash
+
+mode=$1
+keys=$2
+cd $keys
+basename=$(basename $keys)
+
+for i in $(ls)
+do
+    if [ $i == $basename.key ]; then
+        echo "La clave privada es $i"
+        key=$i
+    elif [ $i == $basename.crt ]; then
+        echo "El certificado de usuario es $i"
+        crt=$i
+    elif [ $i == $basename.ovpn ]; then
+        echo "El archivo OVPN es $i"
+        ovpn=$i
+    elif [ $i == $basename.conf ]; then
+        echo "El archivo CONF de usuario es $i"  
+        conf=$i
+    elif [ $i == ca.crt ]; then
+        echo "El certificado público de la entidad certificadora es $i"  
+        cacrt=$i
+    elif [ $i == dh2048.pem ]; then
+        echo "Los parámetros Diffie Hallman se encuentran en $i"  
+        dh=$i
+    fi
+done
+
+if [ $mode == teltonika ]; then
+    rm $conf $ovpn $dh    
+    echo "Extra options:"
+    echo -e "\ttls-cipher \"DEFAULT:@SECLEVEL=0\""
+    echo -e "\tlog /var/log/openvpn"
+fi
+
+if [ $mode == edge ]; then
+    rm $conf
+    # En ovpn, añadir /config/auth en ca, dh, crt y key (cambiando el nombre de crt y key por "client") y añadir "log /var/log/openvpn" detrás de key
+    # Del archivo crt, dejamos sólo desde BEGIN CERTIFICATE a END CERTIFICATE
+    # Renombramos todos los basename de ficheros por client
+fi
+
+if [ $mode == pc ]; then
+    rm $ovpn
+    # En conf, añadir /etc/openvpn en ca, dh, crt y key (cambiamos el nombre de crt y key por "client"), añadimos log y cipher
+    # Del archivo crt, dejamos sólo desde BEGIN CERTIFICATE a END CERTIFICATE
+    # Renombramos todos los basename de ficheros por client
+fi
