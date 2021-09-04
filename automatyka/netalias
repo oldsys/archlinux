@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# ifconfig enp3s0:1 172.16.20.1 netmask 255.255.0.0 up
+
+sudo ifconfig enp3s0:1 $1 netmask $2 up
