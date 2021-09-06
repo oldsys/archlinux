@@ -36,4 +36,6 @@ alias surft='tabbed surf -e'
 alias gameboy='visualboyadvance-m'
 alias telegram='./Documentos/Code/Telegram/Telegram'
 
+alias zabbix='surf monitoring.pvoncloud.com/zabbix'
+
 . "$HOME/.cargo/env"
