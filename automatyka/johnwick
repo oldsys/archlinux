@@ -1,0 +1,8 @@
+#!/bin/bash
+
+pid=$(ps aux | grep $1 | awk '{print $2}' | head -n 1)
+echo target identificated pid $pid
+echo john wick is going to run the job
+kill $pid
+echo work solved
+echo bye
