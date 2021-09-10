@@ -8,6 +8,8 @@ install:
 	cp -f dotfiles/.xbindkeysrc ${PREFIX}/.xbindkeysrc
 	cp -f dotfiles/.xinitrc ${PREFIX}/.xinitrc
 	cp -f dotfiles/.Xresources ${PREFIX}/.Xresources
+	# mv automatyka/ .automatyka
+	# PATH=$PATH:~/.automatyka
 
 uninstall:
 	rm ${PREFIX}/.bashrc
