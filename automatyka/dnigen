@@ -1,3 +1,4 @@
+#!/bin/python
 def calculate_letter(nif):
     seq = 'TRWAGMYFPDXBNJZSQVHLCKE'
     return seq[nif % len(seq)]
@@ -7,5 +8,6 @@ def generate_nif(d):
 
 with open("dni.txt","w") as f:
     for i in range(100000000):
+        print(generate_nif(i))
         f.write(generate_nif(i))
 f.closed
