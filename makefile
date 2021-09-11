@@ -9,6 +9,7 @@ install:
 	cp -f dotfiles/.xbindkeysrc ${PREFIX}/.xbindkeysrc
 	cp -f dotfiles/.xinitrc ${PREFIX}/.xinitrc
 	cp -f dotfiles/.Xresources ${PREFIX}/.Xresources
+	cp -f dotfiles/.pam_environment ${PREFIX}/.pam_environment
 	mkdir -p ${PREFIX}/.config/dunst
 	cp -f dotfiles/dunstrc ${PREFIX}/.config/dunst/dunstrc
 	mkdir -p ${PREFIX}/.automatyka
@@ -27,6 +28,7 @@ uninstall:
 	rm ${PREFIX}/.xbindkeysrc
 	rm ${PREFIX}/.xinitrc
 	rm ${PREFIX}/.Xresources
+	rm ${PREFIX}/.pam_environment
 	rm -rf ${PREFIX}/.config/dunst
 	rm -rf ${PREFIX}/.automatyka
 
