@@ -1,4 +1,5 @@
 PREFIX = ~
+XORG_PREFIX = /etc/X11/xorg.conf.d
 
 install:
 	cp -f dotfiles/.bashrc ${PREFIX}/.bashrc
@@ -13,6 +14,12 @@ install:
 	mkdir -p ${PREFIX}/.automatyka
 	cp -rf automatyka/* ${PREFIX}/.automatyka
 
+xorg:
+	cp -f dotfiles/xorg/10-keyboard.conf ${XORG_PREFIX}/10-keyboard.conf
+	cp -f dotfiles/xorg/50-mouse-acceleration.conf ${XORG_PREFIX}/50-mouse-acceleration.conf
+	cp -f dotfiles/xorg/50-mouse-deceleration.conf ${XORG_PREFIX}/50-mouse-deceleration.conf
+	cp -f dotfiles/xorg/50-synaptics.conf ${XORG_PREFIX}/50-synaptics.conf
+
 uninstall:
 	rm ${PREFIX}/.bashrc
 	rm ${PREFIX}/.dircolors
@@ -22,3 +29,9 @@ uninstall:
 	rm ${PREFIX}/.Xresources
 	rm -rf ${PREFIX}/.config/dunst
 	rm -rf ${PREFIX}/.automatyka
+
+xorg_uninstall:
+	rm ${XORG_PREFIX}/10-keyboard.conf
+	cp ${XORG_PREFIX}/50-mouse-acceleration.conf
+	cp ${XORG_PREFIX}/50-mouse-deceleration.conf
+	cp ${XORG_PREFIX}/50-synaptics.conf
