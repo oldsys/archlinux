@@ -1,0 +1,23 @@
+#!/bin/bash
+
+int_ethernet=enp3s0
+
+# ifconfig enp3s0:1 172.16.20.1 netmask 255.255.0.0 up
+# netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep enp3s0
+
+if [ $1 == "ethernet" ]; then
+    interfaces=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet)
+    ultima=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet | tail -n 1)
+    echo "Interfaces ethernet identificadas: "
+    echo $interfaces
+    echo "Último alias: $ultima"
+    IFS=':' read -ra $myarr <<< "$ultima"
+    for i in "${myarr[@]}"
+    do
+        echo $i
+    done
+else
+    echo no es ethernet
+fi
+
+#sudo ifconfig enp3s0:1 $1 netmask $2 up
