@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [ $1 == "socat" ]; then
+    echo "sudo socat TCP4-LISTEN:80,fork TCP4:172.16.20.72:80"
+fi
