@@ -1,32 +1,42 @@
 #!/bin/bash
 
+interface=enp3s0
 int_ethernet=enp3s0
 int_wifi=wlo1
 
 # ifconfig enp3s0:1 172.16.20.1 netmask 255.255.0.0 up
 
-if [ -z "$1" ]; then
-    echo "No ip"
-else
-    interfaces=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet)
-    ultima=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet | tail -n 1)
+execution () {
+    interfaces=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $interface)
+    ultima=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $interface | tail -n 1)
     echo "Interfaces ethernet identificadas: "
     echo $interfaces
 
-    if [ $ultima == $int_ethernet ]; then
+    if [ $ultima == $interface ]; then
         x=0
     else
         n=$(perl -E 'say for split quotemeta shift, shift' -- ":" "$ultima" | tail -n 1)
         x=$(echo $n+1 | bc)
     fi
 
-    echo "Último alias: $ultima, creando $int_ethernet:$x"
+    echo "Último alias: $ultima, creando $interface:$x"
 
     if [ -z "$2" ]; then
-        echo "Ejecutando ifconfig $int_ethernet:$x $1 up con privilegios"
-        sudo ifconfig $int_ethernet:$x $1 up
+        echo "Ejecutando ifconfig $interface:$x $1 up con privilegios"
+        sudo ifconfig $interface:$x $1 up
     else
-        echo "Ejecutando ifconfig $int_ethernet:$x $1 netmask $2 up con privilegios"
-        sudo ifconfig $int_ethernet:$x $1 netmask $2 up
+        echo "Ejecutando ifconfig $interface:$x $1 netmask $2 up con privilegios"
+        sudo ifconfig $interface:$x $1 netmask $2 up
     fi
+}
+
+if [ -z "$1" ]; then
+    echo "No ip"
+elif [ $1 == "ethernet" ]; then
+    execution $2 $3
+elif [ $1 == "wifi" ]; then
+    interface=$int_wifi
+    execution $2 $3
+else
+    execution $1 $2
 fi
