@@ -4,8 +4,6 @@ interface=enp3s0
 int_ethernet=enp3s0
 int_wifi=wlo1
 
-# ifconfig enp3s0:1 172.16.20.1 netmask 255.255.0.0 up
-
 execution () {
     interfaces=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $interface)
     ultima=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $interface | tail -n 1)
