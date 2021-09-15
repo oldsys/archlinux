@@ -1,27 +1,32 @@
 #!/bin/bash
 
 int_ethernet=enp3s0
+int_wifi=wlo1
 
 # ifconfig enp3s0:1 172.16.20.1 netmask 255.255.0.0 up
 
-if [ $1 == "ethernet" ]; then
+if [ -z "$1" ]; then
+    echo "No ip"
+else
     interfaces=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet)
     ultima=$(netstat -i | sed 's/\|/ /'|awk '{print $1}' | grep $int_ethernet | tail -n 1)
     echo "Interfaces ethernet identificadas: "
     echo $interfaces
-    echo "Último alias: $ultima"
 
     if [ $ultima == $int_ethernet ]; then
-        echo sin alias, creando nuevo
         x=0
     else
-        echo ya hay alias
         n=$(perl -E 'say for split quotemeta shift, shift' -- ":" "$ultima" | tail -n 1)
         x=$(echo $n+1 | bc)
-        echo $n, $x
     fi
-    echo "Ejecutando ifconfig $int_ethernet:$x $2 netmask $3 up con privilegios"
-    sudo ifconfig $int_ethernet:$x $2 netmask $3 up
-else
-    echo Aún no hay modo wifi
+
+    echo "Último alias: $ultima, creando $int_ethernet:$x"
+
+    if [ -z "$2" ]; then
+        echo "Ejecutando ifconfig $int_ethernet:$x $1 up con privilegios"
+        sudo ifconfig $int_ethernet:$x $1 up
+    else
+        echo "Ejecutando ifconfig $int_ethernet:$x $1 netmask $2 up con privilegios"
+        sudo ifconfig $int_ethernet:$x $1 netmask $2 up
+    fi
 fi
